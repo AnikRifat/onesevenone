@@ -1,0 +1,35 @@
+{
+    "name": "laravel/spark-aurelius",
+    "description": "Laravel Spark provides scaffolding for Laravel SaaS applications.",
+    "keywords": ["laravel", "stripe", "billing", "scaffolding", "saas"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Taylor Otwell",
+            "email": "taylor@laravel.com"
+        }
+    ],
+    "require": {
+        "php": "^7.3|^8.0",
+        "ext-json": "*",
+        "ext-zip": "*",
+        "erusev/parsedown": "~1.0",
+        "firebase/php-jwt": "~4.0|~5.0",
+        "intervention/image": "^2.3",
+        "laravel/cashier": "^13.0"
+    },
+    "require-dev": {
+        "mpociot/vat-calculator": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Laravel\\Spark\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "12.x-dev"
+        }
+    },
+    "minimum-stability": "dev"
+}
