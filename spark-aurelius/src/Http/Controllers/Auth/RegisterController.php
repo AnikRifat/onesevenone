@@ -43,6 +43,7 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm(Request $request)
     {
+
         if (Spark::promotion() && ! $request->filled('coupon')) {
             // If the application is running a site-wide promotion, we will redirect the user
             // to a register URL that contains the promotional coupon ID, which will force
@@ -63,6 +64,8 @@ class RegisterController extends Controller
      */
     public function register(RegisterRequest $request)
     {
+
+
         list($user, $paymentId) = Spark::interact(
             Register::class, [$request]
         );

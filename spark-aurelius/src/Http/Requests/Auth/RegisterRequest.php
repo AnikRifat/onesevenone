@@ -31,13 +31,13 @@ class RegisterRequest extends FormRequest
         $validator = $this->baseValidator();
 
         // If a paid plan is selected, we will validate the given required fields which
-        // are typically the Stripe tokens. If the selected plan is free
+        // are typically the Stripe / Braintree tokens. If the selected plan is free
         // of course we will not need to validate that these fields are available.
         $validator->sometimes($paymentAttributes, 'required', function ($input) {
             return $this->plan() && $this->plan()->price > 0;
         });
 
-        return $this->after($validator);
+        return $validator;
     }
 
     /**
@@ -54,7 +54,7 @@ class RegisterRequest extends FormRequest
         $allPlanIdList = Spark::activePlanIdList().','.Spark::activeTeamPlanIdList();
 
         $validator->sometimes('plan', 'required|in:'.$allPlanIdList, function () {
-            return $this->invitation ? false : Spark::needsCardUpFront();
+            return Spark::needsCardUpFront();
         });
 
         return $validator;
@@ -66,9 +66,9 @@ class RegisterRequest extends FormRequest
      * @param  \Illuminate\Validation\Validator  $validator
      * @return \Illuminate\Validation\Validator
      */
-    protected function after($validator)
+    public function withValidator($validator)
     {
-        return $validator->after(function ($validator) {
+        $validator->after(function ($validator) {
             if ($this->coupon) {
                 $this->validateCoupon($validator);
             }
@@ -88,7 +88,7 @@ class RegisterRequest extends FormRequest
     protected function validateCoupon($validator)
     {
         if (! app(CouponRepository::class)->valid($this->coupon)) {
-            $validator->errors()->add('coupon', __('This coupon code is invalid.'));
+            $validator->errors()->add('coupon', 'This coupon code is invalid.');
         }
     }
 
@@ -101,7 +101,7 @@ class RegisterRequest extends FormRequest
     protected function validateInvitation($validator)
     {
         if (! $this->invitation()) {
-            $validator->errors()->add('invitation', __('This invitation code is invalid.'));
+            $validator->errors()->add('invitation', 'This invitation code is invalid.');
         }
     }
 
@@ -130,12 +130,14 @@ class RegisterRequest extends FormRequest
     /**
      * Get the full invitation instance.
      *
-     * @return \Laravel\Spark\Invitation
+     * @return \Laravel\Spark\Invitation|null
      */
     public function invitation()
     {
         if ($this->invitation) {
             return Invitation::where('token', $this->invitation)->first();
         }
+
+        return null;
     }
 }
