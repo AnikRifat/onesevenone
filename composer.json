@@ -16,13 +16,13 @@
         "laravel/framework": "^11.0",
         "laravel/helpers": "*",
         "laravel/sanctum": "^4.0",
-        "laravel/spark": "*@dev",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.5",
         "league/flysystem-aws-s3-v3": "^3.1",
         "parsedown/laravel": "^1.2"
     },
     "require-dev": {
+        "laravel/spark-aurelius": "*@dev",
         "filp/whoops": "^2.14",
         "fakerphp/faker": "^1.16",
         "mockery/mockery": "^1.6.12",
@@ -70,7 +70,7 @@
     "repositories": [
     {
         "type": "path",
-        "url": "./spark"
+        "url": "./spark-aurelius"
     }
 ]   
 
