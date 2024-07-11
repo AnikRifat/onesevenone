@@ -70,7 +70,7 @@
                     <!-- Plan Price -->
                     <td>
                         <div class="btn-table-align">
-                            @{{ plan.price | currency }} / @{{ plan.interval | capitalize }}
+                            @{{ plan.price }}$ / @{{ plan.interval | capitalize }}
                         </div>
                     </td>
 
@@ -80,23 +80,19 @@
                             @{{ plan.trialDays}} Day Trial
                         </div>
                     </td>
-
                     <!-- Plan Select Button -->
                     <td class="text-right">
-                        <button class="btn btn-primary-outline btn-plan"
-                                v-if="selectedPlan !== plan"
-                                @click="selectPlan(plan)"
-                                :disabled="form.busy">
+                        <form action="{{ route('paymentProcess.form') }}" method="POST">
+@csrf
+                            <input type="hidden" value="{{auth()->user()->name}}" name="name">
+<input type="hidden" value="{{auth()->user()->email}}" name="email">
+<textarea style="display: none"  name="amount"> @{{ plan.price }} </textarea>
+<button type="submit" class="btn btn-primary-outline btn-plan">
+Select
+</button>
 
-                            Select
-                        </button>
-
-                        <button class="btn btn-primary btn-plan"
-                                v-if="selectedPlan === plan"
-                                disabled>
-
-                            <i class="fa fa-btn fa-check"></i>Selected
-                        </button>
+                        </form>
+                       
                     </td>
                 </tr>
             </tbody>

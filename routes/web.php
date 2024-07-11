@@ -11,6 +11,14 @@
 |
 */
 
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\StripeController;
+
+
+
+Route::post('/checkout-s', [CheckoutController::class, 'show'])->name('paymentProcess.form');
+Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+
 Route::get('/', 'WelcomeController@show');
 
 // Route::get('/home', 'HomeController@show');
