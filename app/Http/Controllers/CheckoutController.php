@@ -55,11 +55,12 @@ class CheckoutController extends Controller
 
     public function success()
     {
-        return view('stripe.success');
+        return 'Payment Success';
     }
 
     public function cancel()
     {
-        return view('stripe.cancel');
+        return 'Payment Error';
+
     }
 }
