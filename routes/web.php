@@ -15,9 +15,10 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\StripeController;
 
 
-
-Route::post('/checkout-s', [CheckoutController::class, 'show'])->name('paymentProcess.form');
-Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+Route::post('/stripe-checkout-v1', [CheckoutController::class, 'show'])->name('checkout.show');
+Route::post('/stripe-checkout-v1/process', [CheckoutController::class, 'process'])->name('checkout.process');
+Route::get('/stripe-checkout-v1/success', [CheckoutController::class, 'success'])->name('payment.success');
+Route::get('/stripe-checkout-v1/cancel', [CheckoutController::class, 'cancel'])->name('payment.cancel');
 
 Route::get('/', 'WelcomeController@show');
 

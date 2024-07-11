@@ -28,26 +28,38 @@ class CheckoutController extends Controller
 
     public function process(Request $request)
     {
-        $request->validate([
-            'stripeToken' => 'required',
-            'amount' => 'required|numeric',
-            'email' => 'required|email'
-        ]);
-
-        $data = [
-            'amount' => $request->amount * 100, // Amount in cents
-            'currency' => 'usd',
-            'description' => 'Payment from ' . $request->email,
-            'source' => $request->stripeToken,
-        ];
-
+        // Create Stripe Checkout Session
         try {
-            $this->stripe->charges->create($data);
-dd('success');
-            return redirect()->route('payment.form')->with('success', 'Payment successful!');
+            $session = $this->stripe->checkout->sessions->create([
+                'payment_method_types' => ['card'],
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'product_data' => [
+                            'name' => 'Payment from ' . $request->email,
+                        ],
+                        'unit_amount' => $request->amount * 100, // Amount in cents
+                    ],
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+                'success_url' => route('payment.success'),
+                'cancel_url' => route('payment.cancel'),
+            ]);
+
+            return redirect($session->url);
         } catch (\Exception $e) {
-            dd($e->getMessage());
-            return back()->withErrors(['message' => 'Error processing payment: ' . $e->getMessage()]);
+            return back()->withErrors(['message' => 'Error creating Stripe Checkout session: ' . $e->getMessage()]);
         }
+    }
+
+    public function success()
+    {
+        return view('stripe.success');
+    }
+
+    public function cancel()
+    {
+        return view('stripe.cancel');
     }
 }

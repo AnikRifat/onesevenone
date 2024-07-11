@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +25,7 @@
                         <label>Amount (in USD)</label>
                         <input type="number" class="form-control" name="amount" value="{{ $validated['amount'] }}" readonly>
                     </div>
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <label for="card-element">
                             Credit or debit card
                         </label>
@@ -34,7 +35,7 @@
 
                         <!-- Used to display form errors. -->
                         <div id="card-errors" role="alert"></div>
-                    </div>
+                    </div> --}}
                     <button class="btn btn-primary mt-3">Submit Payment</button>
                 </form>
             </div>
