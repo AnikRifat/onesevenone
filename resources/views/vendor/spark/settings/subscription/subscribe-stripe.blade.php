@@ -2,6 +2,7 @@
                 :plans="plans" :billable-type="billableType" inline-template>
 
     <div>
+
         <!-- Common Subscribe Form Contents -->
         @include('spark::settings.subscription.subscribe-common')
 

@@ -7,6 +7,7 @@ use Stripe\StripeClient;
 
 class CheckoutController extends Controller
 {
+    protected $lastUrl;
     protected $stripe;
 
     public function __construct(StripeClient $stripe)
@@ -16,14 +17,13 @@ class CheckoutController extends Controller
 
     public function show(Request $request)
     {
-        // Validate and store the data
-
-
-        return view('stripe.checkout', compact('validated'));
+        return view('stripe.checkout');
     }
 
     public function process(Request $request)
     {
+
+        session()->put('lastUrl', $request->session()->previousUrl());
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -31,7 +31,7 @@ class CheckoutController extends Controller
             'email' => 'required|email|max:255',
             'amount' => 'required|numeric|min:1',
         ]);
-        // Create Stripe Checkout Session
+
         try {
             $session = $this->stripe->checkout->sessions->create([
                 'payment_method_types' => ['card'],
@@ -42,7 +42,7 @@ class CheckoutController extends Controller
                 'mode' => 'subscription',
                 'success_url' => route('payment.success'),
                 'cancel_url' => route('payment.cancel'),
-                'customer_email' => $request['email'],
+                'customer_email' => $validated['email'],
             ]);
 
             return redirect($session->url);
@@ -51,14 +51,16 @@ class CheckoutController extends Controller
         }
     }
 
-    public function success(Request $request)
+    public function success()
     {
-        return 'Payment Success';
+        session()->flash('success', 'Payment successful!');
+
+        return redirect(session('lastUrl'));
     }
 
     public function cancel()
     {
-        return 'Payment Error';
-
+        session()->flash('success', 'Payment canceled.');
+        return redirect(session('lastUrl'));
     }
 }

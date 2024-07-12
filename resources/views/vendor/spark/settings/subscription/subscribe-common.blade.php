@@ -28,6 +28,11 @@
         <div class="clearfix"></div>
     </div>
 
+
+
+    
+
+
     <div class="panel-body table-responsive">
         <!-- Subscription Notice -->
         <div class="p-b-lg">
@@ -40,6 +45,8 @@
                 All subscription plan prices are excluding applicable VAT.
             </p>
         @endif
+
+
 
         <!-- Plan Error Message -->
         <div class="alert alert-danger" v-if="form.errors.has('plan')">
@@ -85,7 +92,7 @@
         
                     <!-- Plan Select Button -->
                     <td class="text-right">
-                        @if (App\Helpers\StripeHelper::isSubscribed(auth()->user()->email,$plan->id))
+                        @if (App\Helpers\StripeHelper::isSubscribed(auth()->user()->email,$plan->id) && !$plan->id == 'free')
                         <button type="submit" class="btn btn-success btn-plan">
                             Subscribed
                         </button>

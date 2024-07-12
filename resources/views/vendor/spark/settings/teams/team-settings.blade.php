@@ -11,7 +11,21 @@
 @section('content')
 <spark-team-settings :user="user" :team-id="{{ $team->id }}" inline-template>
     <div class="spark-screen container">
+
         <div class="row">
+        <div class="col-md-12">
+
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+        </div>
             <!-- Tabs -->
             <div class="col-md-4">
                 <div class="panel panel-default panel-flush">
@@ -82,7 +96,7 @@
                                         </li>
                                     @endif
 
-                                    <!-- Payment Method Link -->
+                                    {{-- <!-- Payment Method Link -->
                                     <li role="presentation">
                                         <a href="#payment-method" aria-controls="payment-method" role="tab" data-toggle="tab">
                                             <i class="fa fa-fw fa-btn fa-credit-card"></i>Payment Method
@@ -94,7 +108,7 @@
                                         <a href="#invoices" aria-controls="invoices" role="tab" data-toggle="tab">
                                             <i class="fa fa-fw fa-btn fa-history"></i>Invoices
                                         </a>
-                                    </li>
+                                    </li> --}}
                                 </ul>
                             </div>
                         </div>
