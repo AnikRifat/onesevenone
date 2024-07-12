@@ -57,6 +57,7 @@
             <thead></thead>
             <tbody>
                 @foreach (Spark::teamPlans() as $plan)
+                @if ($plan->id != 'free')
                 <tr>
                     <!-- Plan Name -->
                     <td>
@@ -92,7 +93,7 @@
         
                     <!-- Plan Select Button -->
                     <td class="text-right">
-                        @if (App\Helpers\StripeHelper::isSubscribed(auth()->user()->email,$plan->id) && !$plan->id == 'free')
+                        @if (App\Helpers\StripeHelper::isSubscribed(auth()->user()->email,$plan->id))
                         <button type="submit" class="btn btn-success btn-plan">
                             Subscribed
                         </button>
@@ -110,6 +111,8 @@
                         @endif
                     </td>
                 </tr>
+                @endif
+              
                 @endforeach
             </tbody>
         </table>
