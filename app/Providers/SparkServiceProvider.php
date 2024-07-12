@@ -91,7 +91,7 @@ class SparkServiceProvider extends ServiceProvider
                 'Dashboard View'
             ]);
 
-        Spark::teamPlan('Basic', 'basic-200mb')
+        Spark::teamPlan('Basic', 'price_1PYBkWFQsxdtYJq1DM6iMHSY')
             ->price(2000)
             ->yearly()
             ->maxTeams(1)
@@ -101,7 +101,7 @@ class SparkServiceProvider extends ServiceProvider
             ->features([
                 '5 User Accounts', '1 Assessment', 'POA&M Report', 'System Security Report', '1 Hour Free Consulting', '200MB Document Storage'
             ]);
-        Spark::teamPlan('Standard', 'standard-600mb')
+        Spark::teamPlan('Standard', 'price_1PbcI7FQsxdtYJq1yEVPK28N')
             ->price(4000)
             ->yearly()
             ->maxTeams(3)
@@ -111,7 +111,7 @@ class SparkServiceProvider extends ServiceProvider
             ->features([
                 '10 User Accounts', '3 Assessments', 'Basic Plan Features', 'Additional Reporting', '2 Hours Free Consulting', '600MB Document Storage'
             ]);
-        Spark::teamPlan('Pro', 'pro-1400mb')
+        Spark::teamPlan('Pro', 'price_1PbcJ9FQsxdtYJq1UXCtsOMF')
             ->price(7000)
             ->yearly()
             ->maxTeams(7)
@@ -121,26 +121,7 @@ class SparkServiceProvider extends ServiceProvider
             ->features([
                 '30 User Accounts', '7 Assessments', 'Standard Plan Features', '3 Hours Free Consulting', '1.4GB Document Storage'
             ]);
-        Spark::teamPlan('Consultant 15G', 'consultant-15g')
-            ->price(37500)
-            ->yearly()
-            ->maxTeams(50)
-            ->maxTeamMembers(1)
-            ->maxCollaborators(1)
-            ->attributes(['storage'=>'15000'])
-            ->features([
-                '1 User Account', '50 Assessments', 'Pro Plan Features', '1 Hour Free Consulting', '15GB Document Storage'
-            ]);
-        Spark::teamPlan('Consultant 30G', 'consultant-30g')
-            ->price(50000)
-            ->yearly()
-            ->maxTeams(100)
-            ->maxTeamMembers(1)
-            ->maxCollaborators(1)
-            ->attributes(['storage'=>'30000'])
-            ->features([
-                '1 User Account', '100 Assessments', 'Pro Plan Features', '1 Hour Free Consulting', '30GB Document Storage'
-            ]);
+
 
         Spark::validateUsersWith(function() {
             return [

@@ -82,11 +82,12 @@
                     </td>
                     <!-- Plan Select Button -->
                     <td class="text-right">
-                        <form action="{{ route('checkout.show') }}" method="POST">
+                        <form action="{{ route('checkout.process') }}" method="POST">
 @csrf
                             <input type="hidden" value="{{auth()->user()->name}}" name="name">
 <input type="hidden" value="{{auth()->user()->email}}" name="email">
 <textarea style="display: none"  name="amount"> @{{ plan.price }} </textarea>
+<textarea style="display: none"  name="plan_id"> @{{ plan.id }} </textarea>
 <button type="submit" class="btn btn-primary-outline btn-plan">
 Select
 </button>

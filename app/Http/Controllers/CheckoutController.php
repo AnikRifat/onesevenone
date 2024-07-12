@@ -17,34 +17,32 @@ class CheckoutController extends Controller
     public function show(Request $request)
     {
         // Validate and store the data
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'amount' => 'required|numeric|min:1',
-        ]);
+
 
         return view('stripe.checkout', compact('validated'));
     }
 
     public function process(Request $request)
     {
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'plan_id' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'amount' => 'required|numeric|min:1',
+        ]);
         // Create Stripe Checkout Session
         try {
             $session = $this->stripe->checkout->sessions->create([
                 'payment_method_types' => ['card'],
                 'line_items' => [[
-                    'price_data' => [
-                        'currency' => 'usd',
-                        'product_data' => [
-                            'name' => 'Payment from ' . $request->email,
-                        ],
-                        'unit_amount' => $request->amount * 100, // Amount in cents
-                    ],
+                    'price' => $validated['plan_id'],
                     'quantity' => 1,
                 ]],
-                'mode' => 'payment',
+                'mode' => 'subscription',
                 'success_url' => route('payment.success'),
                 'cancel_url' => route('payment.cancel'),
+                'customer_email' => $request['email'],
             ]);
 
             return redirect($session->url);
@@ -53,7 +51,7 @@ class CheckoutController extends Controller
         }
     }
 
-    public function success()
+    public function success(Request $request)
     {
         return 'Payment Success';
     }
