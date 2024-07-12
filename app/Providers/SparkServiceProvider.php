@@ -83,13 +83,13 @@ class SparkServiceProvider extends ServiceProvider
         Spark::useStripe()->noCardUpFront()->teamTrialDays(5);
         Spark::collectBillingAddress();
 
-        Spark::freeTeamPlan()
-            ->yearly()
-            ->maxTeams(1)
-            ->maxTeamMembers(1)
-            ->features([
-                'Dashboard View'
-            ]);
+        // Spark::freeTeamPlan()
+        //     ->yearly()
+        //     ->maxTeams(1)
+        //     ->maxTeamMembers(1)
+        //     ->features([
+        //         'Dashboard View'
+        //     ]);
 
         Spark::teamPlan('Basic', 'price_1PYBkWFQsxdtYJq1DM6iMHSY')
             ->price(2000)

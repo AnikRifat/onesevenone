@@ -1,25 +1,24 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <div class="pull-left" :class="{'btn-table-align': hasMonthlyAndYearlyPlans}">
+        <div class="pull-left" :class="{ 'btn-table-align': hasMonthlyAndYearlyPlans }">
             Subscribe
         </div>
-        <div class='pull-right' style='margin-right:1em'><a class='btn btn-xs btn-info' target="_blank" title='How To Subscribe' href='https://blognist800171.files.wordpress.com/2018/04/171-subscribing.mp4'><i class="fa fa-fw fa-btn fa-video-camera"></i></a></div>
-
+        <div class='pull-right' style='margin-right:1em'><a class='btn btn-xs btn-info' target="_blank"
+                title='How To Subscribe' href='https://blognist800171.files.wordpress.com/2018/04/171-subscribing.mp4'><i
+                    class="fa fa-fw fa-btn fa-video-camera"></i></a></div>
         <!-- Interval Selector Button Group -->
         <div class="pull-right">
             <div class="btn-group" v-if="hasMonthlyAndYearlyPaidPlans">
                 <!-- Monthly Plans -->
-                <button type="button" class="btn btn-default"
-                        @click="showMonthlyPlans"
-                        :class="{'active': showingMonthlyPlans}">
+                <button type="button" class="btn btn-default" @click="showMonthlyPlans"
+                    :class="{ 'active': showingMonthlyPlans }">
 
                     Monthly
                 </button>
 
                 <!-- Yearly Plans -->
-                <button type="button" class="btn btn-default"
-                        @click="showYearlyPlans"
-                        :class="{'active': showingYearlyPlans}">
+                <button type="button" class="btn btn-default" @click="showYearlyPlans"
+                    :class="{ 'active': showingYearlyPlans }">
 
                     Yearly
                 </button>
@@ -50,52 +49,61 @@
         <table class="table table-borderless m-b-none">
             <thead></thead>
             <tbody>
-                <tr v-for="plan in paidPlansForActiveInterval">
+                @foreach (Spark::teamPlans() as $plan)
+                <tr>
                     <!-- Plan Name -->
                     <td>
-                        <div class="btn-table-align" @click="showPlanDetails(plan)">
+                        <div class="btn-table-align" onclick="showPlanDetails({{ $plan->id }})">
                             <span style="cursor: pointer;">
-                                <strong>@{{ plan.name }}</strong>
+                                <strong>{{ $plan->name }}</strong>
                             </span>
                         </div>
                     </td>
-
+        
                     <!-- Plan Features Button -->
                     <td>
-                        <button class="btn btn-default m-l-sm" @click="showPlanDetails(plan)">
+                        <button class="btn btn-default m-l-sm" @click="showPlanDetails({{ json_encode($plan) }})">
                             <i class="fa fa-btn fa-star-o"></i>Plan Features
                         </button>
                     </td>
-
+        
                     <!-- Plan Price -->
                     <td>
                         <div class="btn-table-align">
-                            @{{ plan.price }}$ / @{{ plan.interval | capitalize }}
+                            {{ $plan->price }}$ / {{ ucfirst($plan->interval) }}
                         </div>
                     </td>
-
+        
                     <!-- Trial Days -->
                     <td>
-                        <div class="btn-table-align" v-if="plan.trialDays && ! hasSubscribed(plan)">
-                            @{{ plan.trialDays}} Day Trial
+                        @if ($plan->trialDays && !App\Helpers\StripeHelper::isSubscribed(auth()->user()->email))
+                        <div class="btn-table-align">
+                            {{ $plan->trialDays }} Day Trial
                         </div>
+                        @endif
                     </td>
+        
                     <!-- Plan Select Button -->
                     <td class="text-right">
+                        @if (App\Helpers\StripeHelper::isSubscribed(auth()->user()->email,$plan->id))
+                        <button type="submit" class="btn btn-success btn-plan">
+                            Subscribed
+                        </button>
+                        @else
                         <form action="{{ route('checkout.process') }}" method="POST">
-@csrf
-                            <input type="hidden" value="{{auth()->user()->name}}" name="name">
-<input type="hidden" value="{{auth()->user()->email}}" name="email">
-<textarea style="display: none"  name="amount"> @{{ plan.price }} </textarea>
-<textarea style="display: none"  name="plan_id"> @{{ plan.id }} </textarea>
-<button type="submit" class="btn btn-primary-outline btn-plan">
-Select
-</button>
-
+                            @csrf
+                            <input type="hidden" value="{{ auth()->user()->name }}" name="name">
+                            <input type="hidden" value="{{ auth()->user()->email }}" name="email">
+                            <textarea style="display: none" name="amount">{{ $plan->price }}</textarea>
+                            <textarea style="display: none" name="plan_id">{{ $plan->id }}</textarea>
+                            <button type="submit" class="btn btn-primary-outline btn-plan">
+                                Select
+                            </button>
                         </form>
-                       
+                        @endif
                     </td>
                 </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
