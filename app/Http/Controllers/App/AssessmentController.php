@@ -58,12 +58,14 @@ class AssessmentController extends Controller
         if (!$team){
           return redirect('/');
         }
+
         $controls = Control::all();
         $sections = Section::all();
         $answers = $team->answers;
 
         //get # and size of files stored
         $files = $team->getFiles();
+
         $filecount = 0;
         $filesize = 0;
         foreach($files as $file){

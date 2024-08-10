@@ -12,7 +12,7 @@ class UpdateTrialEndingDate
      */
     public function handle($event)
     {
-        $event->team->forceFill([
+         $event->team->forceFill([
             'trial_ends_at' => $event->team->subscription()->trial_ends_at,
         ])->save();
     }

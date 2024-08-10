@@ -27,7 +27,6 @@
                     @endif
 
                     <div class="col-sm-5">
-
                       <div class="panel panel-info">
                         <div class="panel-heading">Assessment Status</div>
                         <div class="panel-body">

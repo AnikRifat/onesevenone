@@ -14,11 +14,12 @@ class UpdateActiveSubscription
      */
     public function handle($event)
     {
-        $currentPlan = $event instanceof SubscriptionCancelled
-                            ? null : $event->team->subscription()->provider_plan;
+        // $currentPlan = $event instanceof SubscriptionCancelled
+        //                     ? null : $event->team->subscription()->provider_plan;
 
+        
         $event->team->forceFill([
-            'current_billing_plan' => $currentPlan,
+            'current_billing_plan' => $event->plan->id,
         ])->save();
     }
 }

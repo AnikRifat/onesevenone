@@ -111,6 +111,7 @@ class SparkServiceProvider extends ServiceProvider
             ->features([
                 '10 User Accounts', '3 Assessments', 'Basic Plan Features', 'Additional Reporting', '2 Hours Free Consulting', '600MB Document Storage'
             ]);
+            
         Spark::teamPlan('Pro', 'price_1PbcJ9FQsxdtYJq1UXCtsOMF')
             ->price(7000)
             ->yearly()

@@ -40,10 +40,9 @@ trait Billable
     public function sparkPlan($subscription = 'default')
     {
         $subscription = $this->subscription($subscription);
-
-        if ($subscription && $subscription->valid()) {
+        if ($subscription) {
             return $this->availablePlans()->first(function ($value) use ($subscription) {
-                return $value->id === $subscription->provider_plan;
+                return $subscription;
             });
         }
 

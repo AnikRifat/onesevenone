@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use Laravel\Spark\Spark;
 use Stripe\StripeClient;
 
 class StripeHelper
@@ -24,6 +25,33 @@ class StripeHelper
                     }
                 }
             }
+            return false;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+    public static function subscriptionItem()
+    {
+        try {
+            $stripe = new StripeClient(env('STRIPE_SECRET'));
+            $customers = $stripe->customers->all(['email' => auth()->user()->email]);
+
+            
+             if (count($customers->data) > 0) {
+                 $customer = $customers->data[0];
+                 $subscriptions = $stripe->subscriptions->all(['customer' => $customer->id, 'status' => 'active']);
+                
+                 foreach ($subscriptions->data as $subscription) {
+                     foreach ($subscription->items->data as $item) {
+            foreach(Spark::teamPlans() as $plan){
+                if ($item->price->id === $plan->id) {
+                    return $plan;  
+                }
+            }
+                   
+                     }
+                 }
+             }
             return false;
         } catch (\Exception $e) {
             return false;
